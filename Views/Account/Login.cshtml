@@ -1,0 +1,88 @@
+﻿@model MXP.IdentityServer.Controllers.Account.LoginViewModel
+<div class="content-box">
+    <div class="header p-0">Login</div>
+   
+    <div class="row">
+        @if (Model.EnableLocalLogin)
+        {
+            <div class="text-large col-12 text-center pb-3">Local Login</div>
+            <div class="col-12">
+                <form asp-route="Login">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <fieldset>
+                        <div class="form-group mt-3">
+                            @*<label asp-for="Username" class="text-left col-12 pl-0"></label>*@
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="username-addon">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                </div>
+                                <input class="form-control" placeholder="Username" asp-for="Username" autofocus aria-describedby="username-addon">
+                            </div>
+
+                        </div>
+                        <div class="form-group mb-4">
+                            @*<label asp-for="Password" class="text-left col-12 pl-0"></label>*@
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="password-addon">
+                                        <i class="fa fa-key"></i>
+                                    </span>
+                                </div>
+                                <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off" aria-describedby="password-addon">
+                            </div>
+                        </div>
+
+                        @Html.Partial("_ValidationSummary")
+
+                        @if (Model.AllowRememberLogin)
+                        {
+                            <div class="form-group login-remember">
+                                <label asp-for="RememberLogin" class="d-flex align-items-center justify-content-center">
+                                    <input asp-for="RememberLogin" class="mr-1">
+                                    <strong>Remember My Login</strong>
+                                </label>
+                            </div>
+                        }
+                        <div class="col-12 small">
+                            <p>The default users are alice/bob, password: Pass123$</p>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-login col-12" name="button" value="login">LOGIN</button>
+                            @*<button class="btn btn-default" name="button" value="cancel">Cancel</button>*@
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        }
+        @if (Model.VisibleExternalProviders.Any())
+        {
+            <div class="panel panel-default">
+                <div class="text-large col-12 text-center pb-3">External Login</div>
+                <div class="col-12">
+                    <ul class="list-inline">
+                        @foreach (var provider in Model.VisibleExternalProviders)
+                        {
+                            <li>
+                                <a class="btn btn-default"
+                                   asp-action="ExternalLogin"
+                                   asp-route-provider="@provider.AuthenticationScheme"
+                                   asp-route-returnUrl="@Model.ReturnUrl">
+                                    @provider.DisplayName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+        @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+        {
+            <div class="alert alert-danger">
+                <strong>Invalid login request</strong>
+                There are no login schemes configured for this client.
+            </div>
+        }
+    </div>
+</div>

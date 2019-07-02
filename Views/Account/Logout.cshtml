@@ -1,0 +1,19 @@
+﻿@model MXP.IdentityServer.Controllers.Account.LogoutViewModel
+<div class="content-box">
+    <div class="page-header">
+        <div class="header">Logout</div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <p>Would you like to logout of IdentityServer?</p>
+            <form asp-action="Logout">
+                <input type="hidden" name="logoutId" value="@Model.LogoutId" />
+                <fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-login col-5">Yes</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
